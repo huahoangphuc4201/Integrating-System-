@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>HRM and Payroll</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png"
+	href="design/login page/images/icons/favicon.ico" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/vendor/animate/animate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/css/util.css">
+<link rel="stylesheet" type="text/css"
+	href="design/login page/css/main.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="design/login page/css/notification.css">
+<!--===============================================================================================-->
+</head>
+<body onload="checkToken()">
+
+	<div class="limiter">
+		<div class="container-login100"
+			style="background-image: url('design/login page/images/bg-01.jpg');">
+			<div class="wrap-login100 p-t-30 p-b-50">
+				<span class="login100-form-title p-b-41"> Welcome </span>
+
+				<form class="login100-form validate-form p-b-33 p-t-5">
+					<div class="wrap-input100 validate-input"
+						data-validate="Enter username">
+						<input id="username" class="input100" type="text" name="username"
+							placeholder="User name"> <span class="focus-input100"
+							data-placeholder="&#xe82a;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input"
+						data-validate="Enter password">
+						<input id="password" class="input100" type="password"
+							name="password" placeholder="Password"> <span
+							class="focus-input100" data-placeholder="&#xe80f;"></span>
+					</div>
+
+					<div class="container-login100-form-btn m-t-32">
+						<button id="btnLogin" class="login100-form-btn" type="button" onclick="doLogin()" >Login</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<div id="snackbar">Wrong username or password!!!</div>
+
+	<div id="dropDownSelect1"></div>
+
+	<script type="text/javascript">
+	
+		function test(){
+			window.location.replace('http://localhost:8080/homepage');
+		}
+	
+		function doLogin(){
+			fetch("http://localhost:8080/login", {
+			     
+			    // Adding method type
+			    method: "POST",
+			     
+			    // Adding body or contents to send
+			    body: JSON.stringify({
+			        username: document.getElementById("username").value,
+			        password: document.getElementById("password").value
+			    }),
+			     
+			    // Adding headers to the request
+			    headers: {
+			        "Content-type": "application/json; charset=UTF-8"
+			    }
+			})
+			 
+			// Converting to JSON
+			.then(response => response.json())
+			 
+			// Displaying results to console
+			.then(json => {
+				let token=json.token;
+				if(token.length<7)
+				{
+					myFunction();
+				}
+				else
+				{
+					document.cookie = "Authorization=Bearer-"+token;
+					window.location.replace('http://localhost:8080/homepage');
+				}
+			});
+		}
+		
+		const textbox = document.getElementById("password");
+		textbox.addEventListener("keypress", function onEvent(event) {
+		    if (event.key === "Enter") {
+		        document.getElementById("btnLogin").click();
+		    }
+		});
+		
+		function checkToken(){
+			if(getCookie("Authorization").length>7)
+				window.location.replace('http://localhost:8080/homepage');
+		}
+		
+		function getCookie(cname) {
+			  let name = cname + "=";
+			  let decodedCookie = decodeURIComponent(document.cookie);
+			  let ca = decodedCookie.split(';');
+			  for(let i = 0; i <ca.length; i++) {
+			    let c = ca[i];
+			    while (c.charAt(0) == ' ') {
+			      c = c.substring(1);
+			    }
+			    if (c.indexOf(name) == 0) {
+			      return c.substring(name.length, c.length);
+			    }
+			  }
+			  return "";
+			}
+		
+	</script>
+
+	<!--===============================================================================================-->
+	<script src="design/login page/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="design/login page/vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="design/login page/vendor/bootstrap/js/popper.js"></script>
+	<script src="design/login page/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="design/login page/vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="design/login page/vendor/daterangepicker/moment.min.js"></script>
+	<script
+		src="design/login page/vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+	<script src="design/login page/vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+	<script src="design/login page/js/main.js"></script>
+
+	<script src="design/login page/js/notify.js"></script>
+
+</body>
+</html>

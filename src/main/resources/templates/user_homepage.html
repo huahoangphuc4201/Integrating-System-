@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Dashboard</title>
+
+<!-- Custom fonts for this template -->
+<link
+	href="design/admin homepage/vendor/fontawesome-free/css/all.min.css"
+	rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+<!-- Custom styles for this template -->
+<link href="design/admin homepage/css/sb-admin-2.min.css"
+	rel="stylesheet">
+
+<!-- Custom styles for this page -->
+<link
+	href="design/admin homepage/vendor/datatables/dataTables.bootstrap4.min.css"
+	rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper" th:switch="${role}">
+
+		<!-- Sidebar -->
+		<ul th:case="'USER'"
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar">
+
+			<!-- Sidebar - Brand -->
+			<a
+				class="sidebar-brand d-flex align-items-center justify-content-center"
+				href="/homepage">
+				<div class="sidebar-brand-icon rotate-n-15">
+					<i class="fas fa-laugh-wink"></i>
+				</div>
+				<div class="sidebar-brand-text mx-3">Team 2</div>
+			</a>
+
+			<!-- Divider -->
+			<hr class="sidebar-divider my-0">
+
+			<!-- Nav Item - Dashboard -->
+			<li class="nav-item"><a class="nav-link" href="/profile"> <i
+					class="fas fa-address-card"></i> <span>Profile</span></a></li>
+
+			<!-- Divider -->
+			<hr class="sidebar-divider d-none d-md-block">
+
+			<!-- Sidebar Toggler (Sidebar) -->
+			<div class="text-center d-none d-md-inline">
+				<button class="rounded-circle border-0" id="sidebarToggle"></button>
+			</div>
+
+		</ul>
+
+		<ul th:case="'CEO'"
+			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+			id="accordionSidebar">
+
+			<!-- Sidebar - Brand -->
+			<a
+				class="sidebar-brand d-flex align-items-center justify-content-center"
+				href="/homepage">
+				<div class="sidebar-brand-icon rotate-n-15">
+					<i class="fas fa-laugh-wink"></i>
+				</div>
+				<div class="sidebar-brand-text mx-3">Dashboard</div>
+			</a>
+
+			<!-- Divider -->
+			<hr class="sidebar-divider my-0">
+
+			<!-- Nav Item - Dashboard -->
+			<li class="nav-item"><a class="nav-link" href="/homepage"> <i
+					class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+
+			<!-- Divider -->
+			<hr class="sidebar-divider">
+
+			<li class="nav-item"><a class="nav-link collapsed" href="#"
+				data-toggle="collapse" data-target="#collapsePages"
+				aria-expanded="true" aria-controls="collapsePages"> <i
+					class="fas fa-fw fa-table"></i> <span>Tables</span>
+			</a>
+				<div id="collapsePages" class="collapse"
+					aria-labelledby="headingPages" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<a class="collapse-item" href="/tables">Employee</a> <a
+							class="collapse-item" href="/account-setting">Account</a>
+					</div>
+				</div></li>
+			<li class="nav-item"><a class="nav-link" href="/profile"> <i
+					class="fas fa-address-card"></i> <span>Profile</span></a></li>
+			<!-- Divider -->
+			<hr class="sidebar-divider d-none d-md-block">
+
+			<!-- Sidebar Toggler (Sidebar) -->
+			<div class="text-center d-none d-md-inline">
+				<button class="rounded-circle border-0" id="sidebarToggle"></button>
+			</div>
+
+		</ul>
+		<!-- End of Sidebar -->
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Topbar -->
+				<nav
+					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+					<!-- Sidebar Toggle (Topbar) -->
+					<form class="form-inline">
+						<button id="sidebarToggleTop"
+							class="btn btn-link d-md-none rounded-circle mr-3">
+							<i class="fa fa-bars"></i>
+						</button>
+					</form>
+
+					<!-- Topbar Navbar -->
+					<ul class="navbar-nav ml-auto">
+
+
+						<!-- Nav Item - Messages -->
+
+						<!-- Nav Item - Search Dropdown (Visible Only XS) -->
+						<li class="nav-item dropdown no-arrow d-sm-none"><a
+							class="nav-link dropdown-toggle" href="#" id="searchDropdown"
+							role="button" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false"> <i class="fas fa-search fa-fw"></i>
+								<li th:if="${role}=='CEO'" class="nav-item dropdown no-arrow mx-1"><a
+									class="nav-link dropdown-toggle" href="#" id="alertsDropdown"
+									role="button" data-toggle="dropdown" aria-haspopup="true"
+									aria-expanded="false"> <i class="fas fa-bell fa-fw"></i> <!-- Counter - Alerts -->
+										<span class="badge badge-danger badge-counter" th:utext="${alerts.size()}"></span>
+								</a> <!-- Dropdown - Alerts -->
+									<div
+										class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+										aria-labelledby="alertsDropdown">
+										<h6 class="dropdown-header">Alerts Center</h6>
+										<a class="dropdown-item d-flex align-items-center" href="#" th:each="alert : ${alerts}">
+									<div class="mr-3">
+										<div class="icon-circle bg-light">
+											<i class="fas fa-calendar-alt"></i>
+										</div>
+									</div>
+									<div>
+										<div class="small text-gray-500" th:utext="${alert.count}"></div>
+										<span class="font-weight-bold" th:utext="${alert.message}"></span>
+									</div>
+								</a>
+									</div></li> <!-- Nav Item - Messages -->
+
+								<div class="topbar-divider d-none d-sm-block"></div>
+						</a> <!-- Dropdown - Messages -->
+							<div
+								class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+								aria-labelledby="searchDropdown">
+								<form class="form-inline mr-auto w-100 navbar-search">
+									<div class="input-group">
+										<input type="text"
+											class="form-control bg-light border-0 small"
+											placeholder="Search for..." aria-label="Search"
+											aria-describedby="basic-addon2">
+										<div class="input-group-append">
+											<button class="btn btn-primary" type="button">
+												<i class="fas fa-search fa-sm"></i>
+											</button>
+										</div>
+									</div>
+								</form>
+							</div></li>
+
+						<!-- Nav Item - User Information -->
+						<li class="nav-item dropdown no-arrow"><a
+							class="nav-link dropdown-toggle" href="#" id="userDropdown"
+							role="button" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false"> <span
+								class="mr-2 d-none d-lg-inline text-gray-600 small"
+								th:utext="${myname}"></span> <img
+								class="img-profile rounded-circle"
+								src="design/admin homepage/img/undraw_profile.svg">
+						</a> <!-- Dropdown - User Information -->
+							<div
+								class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+								aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="#" data-toggle="modal"
+									data-target="#accountModal"> <i
+									class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Change
+									password
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#" data-toggle="modal"
+									data-target="#logoutModal"> <i
+									class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+									Logout
+								</a>
+							</div></li>
+
+					</ul>
+
+				</nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<div class="row">
+
+						<!-- Earnings (Monthly) Card Example -->
+						<div class="col-xl">
+							<div class="card border-left-primary shadow h-100 py-2">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+												Anniversary</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"
+												th:utext="${anniversary}"></div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-calendar fa-2x text-gray-300"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Earnings (Monthly) Card Example -->
+						<div class="col-xl">
+							<div class="card border-left-success shadow h-100 py-2">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div
+												class="text-xs font-weight-bold text-success text-uppercase mb-1">
+												Earnings</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"
+												th:utext="${totalAmount}"></div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Earnings (Monthly) Card Example -->
+						<div class="col-xl">
+							<div class="card border-left-info shadow h-100 py-2">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<div
+												class="text-xs font-weight-bold text-info text-uppercase mb-1">Day
+												off</div>
+											<div class="row no-gutters align-items-center">
+												<div class="col-auto">
+													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+														th:utext="${vacationDay}"></div>
+												</div>
+											</div>
+										</div>
+										<div class="col-auto">
+											<i class="fas fa-calendar-times text-gray-300"
+												style="font-size: 36px"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="row" style="margin-top: 30px">
+
+						<!-- Area Chart -->
+						<div class="col-xl">
+							<div class="card shadow mb-4">
+								<!-- Card Header - Dropdown -->
+								<div
+									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<h6 class="m-0 font-weight-bold text-primary">Profile</h6>
+									<a onclick="edit()"> <i class='fas fa-edit text-gray-300'
+										style='font-size: 24px; cursor: pointer'></i>
+									</a>
+								</div>
+								<!-- Card Body -->
+								<div class="card-body" style="display: flex">
+									<div class="card" style="width: 350px">
+										<img class="card-img-top"
+											src="https://www.w3schools.com/bootstrap4/img_avatar1.png"
+											alt="Card image" style="width: 100%">
+									</div>
+									<form action="/update-profile" method="post">
+										<table style="margin-left: 30px">
+											<tr>
+												<td style="padding: 10px"><label>ID:</label> <label
+													th:utext="${employeeID}"
+													style="width: 100%; color: #0099ff"></label> <input
+													th:value="${employeeID}" type="hidden" name="employeeID"
+													style="border: solid 1px gray; border-radius: 7px; width: 100%">
+												</td>
+
+												<td style="padding: 10px"><label>First name:</label> <label
+													th:utext="${firstname}" style="width: 100%; color: #0099ff"></label>
+													<input th:value="${firstname}" type="hidden"
+													name="firstname"
+													style="border: solid 1px gray; border-radius: 7px; width: 100%"></td>
+												<td style="padding: 10px"><label>Last name:</label> <label
+													th:utext="${lastname}" style="width: 100%; color: #0099ff"></label>
+													<input th:value="${lastname}" type="hidden" name="lastname"
+													style="border: solid 1px gray; border-radius: 7px; width: 100%"></td>
+											</tr>
+											<tr>
+												<td colspan="2" style="padding: 10px"><label>Address:</label>
+													<input type="text" name="address1" readonly
+													th:value="${address1}"
+													style="border: solid 1px gray; border-radius: 7px; width: 100%; padding: 5px 5px">
+												</td>
+												<td style="padding: 10px">
+													<div>
+														<label>City:</label> <input type="text" name="city"
+															readonly th:value="${city}"
+															style="border: solid 1px gray; border-radius: 7px; width: 100%; padding: 5px 5px">
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<td style="padding: 10px"><label>Email:</label> <input
+													th:value="${email}" type="text" name="email" readonly
+													style="border: solid 1px gray; border-radius: 7px; width: 100%; padding: 5px 5px"></td>
+												<td style="padding: 10px"><label>Phone:</label> <input
+													th:value="${phoneNumber}" type="text" name="phoneNumber"
+													readonly
+													style="border: solid 1px gray; border-radius: 7px; width: 100%; padding: 5px 5px"></td>
+											</tr>
+											<tr>
+												<td style="padding: 10px"><label>Zip:</label> <input
+													th:value="${zip}" type="text" name="zip" readonly
+													style="border: solid 1px gray; border-radius: 7px; width: 100%; padding: 5px 5px"></td>
+												<td style="padding: 10px"><label>SSN:</label> <input
+													th:value="${ssn}" type="text" name="ssn" readonly
+													style="border: solid 1px gray; border-radius: 7px; width: 100%; padding: 5px 5px"></td>
+												<td>
+													<div style="display: flex; float: right">
+														<input type="submit" id="btn-save"
+															style="background-color: #0099ff; border-radius: 7px; border: none; color: white; padding: 10px 20px; display: none"
+															value="Save" /> <input id="btn-cancle" type="button"
+															onclick="window.location.reload()"
+															style="background-color: #4d4d4d; border-radius: 7px; border: none; color: white; padding: 10px 20px; display: none; margin-left: 10px"
+															value="Cancle" />
+													</div>
+												</td>
+											</tr>
+										</table>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div th:switch="${message}">
+							<div th:case="'success'"
+								style="background-color: #e6ffee; border-radius: 10px; border: 1px solid #00b300; border-width: 5px; width: 100%; padding: 10px; text-align: center">
+								<label style="font-size: 30px; color: #00b300">Updated!!</label>
+							</div>
+							<div th:case="'fail'"
+								style="background-color: #ffe6e6; border-radius: 10px; border: 1px solid #e60000; border-width: 5px; width: 100%; padding: 10px; text-align: center">
+								<label style="font-size: 30px; color: #e60000">Fail to
+									update!</label>
+							</div>
+						</div>
+					</div>
+					<!-- /.container-fluid -->
+
+				</div>
+				<!-- End of Main Content -->
+
+				<!-- Footer -->
+				<footer class="sticky-footer bg-white">
+					<div class="container my-auto">
+						<div class="copyright text-center my-auto">
+							<span>Team2 &copy; CMU-CS 445 LIS</span>
+						</div>
+					</div>
+				</footer>
+				<!-- End of Footer -->
+
+			</div>
+			<!-- End of Content Wrapper -->
+
+		</div>
+		<!-- End of Page Wrapper -->
+
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded" href="#page-top"> <i
+			class="fas fa-angle-up"></i>
+		</a>
+
+		<!-- Logout Modal-->
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Ready to
+							Leave?</h5>
+						<button class="close" type="button" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">Select "Logout" below if you are
+						ready to end your current session.</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button"
+							data-dismiss="modal">Cancel</button>
+						<a class="btn btn-primary" onclick="dologout()">Logout</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="accountModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<form action="/change-password" onsubmit="checkValidPassword();"
+					method="post">
+					<div class="modal-content" style="width: 500px">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Change
+								password</h5>
+							<button class="close" type="button" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<div style="padding: 20px 40px">
+							<label style="margin-top: 10px">New password</label> <input
+								type="password" id="new-password1" name="newPassword"
+								style="padding: 5px 10px; border-radius: 5px; border: 1px gray solid; width: 100%">
+							<label style="margin-top: 10px">Confirm new password</label> <input
+								type="password" id="new-password2" name="newPassword1"
+								style="padding: 5px 10px; border-radius: 5px; border: 1px gray solid; width: 100%">
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-secondary" type="button"
+								data-dismiss="modal">Cancel</button>
+							<input class="btn btn-primary" type="submit" value="Save">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			function dologout() {
+				document.cookie = "Authorization=";
+				window.location.replace('http://localhost:8080/login');
+			}
+			function edit(){
+				document.getElementById('btn-save').style.display='table-cell';
+				document.getElementById('btn-cancle').style.display='table-cell';
+				var listTextbox= document.querySelectorAll('input[type="text"]');
+				for(textbox of listTextbox){
+					textbox.readOnly = false;
+				}
+			}
+			function checkValidPassword(){
+				var password1=document.getElementById('new-password1').value;
+				var password2=document.getElementById('new-password2').value;
+				if(password1.length<6||password2.length<6){
+					alert("Password must has at least 6 characters!");
+					event.preventDefault(); 
+				}
+				else if(password1!=password2){			
+					alert("The password does not match!");
+					event.preventDefault();
+				}
+				else{
+					alert("Success!");
+				} 
+			}
+		</script>
+
+		<!-- Bootstrap core JavaScript-->
+		<script src="design/admin homepage/vendor/jquery/jquery.min.js"></script>
+		<script
+			src="design/admin homepage/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+		<!-- Core plugin JavaScript-->
+		<script
+			src="design/admin homepage/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+		<!-- Custom scripts for all pages-->
+		<script src="design/admin homepage/js/sb-admin-2.min.js"></script>
+
+		<!-- Page level plugins -->
+		<script
+			src="design/admin homepage/vendor/datatables/jquery.dataTables.min.js"></script>
+		<script
+			src="design/admin homepage/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+		<!-- Page level custom scripts -->
+		<script src="design/admin homepage/js/demo/datatables-demo.js"></script>
+</body>
+
+</html>
